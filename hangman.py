@@ -18,10 +18,6 @@ chosenFruit = random.choice(fruits)
 
 chances = len(chosenFruit) + 2
 
-# CREATE A FUNCTION THAT TAKES THE CHOSEN WORD
-# GIVE ME DASHES FOR THE LETTERS OF THE WORD
-#
-
 
 def guessWord( chosenFruit, chances) :
     print("-" * len(chosenFruit))
@@ -51,4 +47,5 @@ def guessWord( chosenFruit, chances) :
         elif chances == 0 and "-" in charList:
             print("Out of chances! good luck next time")
 
-guessWord(chosenFruit, chances)
+guessWord(chosenFruit, chances)  
+# function based for but will refactor to OOP in the future once I get there
