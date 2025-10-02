@@ -29,3 +29,4 @@ while(chanceCounter < allowedChances):
         print(f"too high")
 
     
+#first project in python by SHershah
