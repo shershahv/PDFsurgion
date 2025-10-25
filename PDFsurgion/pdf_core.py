@@ -2,8 +2,11 @@ import pypdf
 
 
 def load_pdf (file_path) :
-    return pypdf.PdfReader(file_path)
-   
+    try:
+        return pypdf.PdfReader(file_path)
+    except FileNotFoundError as e:
+        print(f"File not FOund error : {e}")
+        exit()
 
 
 def get_page_count(reader):
@@ -31,56 +34,75 @@ def get_metadata(reader):
     return reader.metadata
 
 
+def merge_pdfs(file_paths, output_path=None):
+    try:
+        # merger = pypdf.PdfWriter()
+      
+        with open (output_path or "merged_pdf.pdf", "wb") as f :
+            merger = pypdf.PdfWriter()
+            for file in file_paths:
+                merger.append(file)
+            
+            merger.write(f)
+                
+        print("Success merging")
+    except FileNotFoundError as e:
+        print("file not found error")
     
+  
+def split_pdf(file_path, output_dir=None):
     
-    
-    
-    
-    
-    
-pdf = load_pdf("sample2.pdf")
+    pdf_reader = load_pdf(file_path)
+    page_count = get_page_count(pdf_reader)
 
-pages = pdf.pages
-
-
-text = extract_text(pdf)
-# print(text)
-
-
-images = extract_images(pdf)
-# print(pages[0].images[0].data)
-print(len(images))
-
-def ExportImages(extractedImages):
-    image_count = 1
-    for image in images:
-    
-        image_name = str(image_count) + ".png"
-        with open(image_name, "wb") as data:
-            data.write(image)
-        image_count += 1
+    counter = 0
     
     
-# ExportImages(images)
-
-# print(get_metadata(pdf).author)
-metadata = get_metadata(pdf)
-# for key in metadata.keys():
-#     print(key)
-    
-# for value in metadata.values():
-#     print(value)
-    
-# for key, value in metadata.items():
-#     print(f"{key} : -> {value}")
+    for i in range(page_count):
+        counter += 1
+        pdf_writer = pypdf.PdfWriter()
+        pdf_writer.add_page(pdf_reader.pages[i])
+        pdf_writer.write(f"page {counter}.pdf")
+        pdf_writer.close()
     
     
-# print(type(metadata.items()))
+    
+    
+    
+    
+    
 
-# print(metadata.items())
+    
+    
+    
+    
+    
+    
+# pdf = load_pdf("sample2.pdf")
 
-items_list = ["hi", "hello", "How are yoy"]
+# pages = pdf.pages
 
-hi, hello, greetings = items_list
 
-print(hi,hello, greetings, end="\n \n")
+# text = extract_text(pdf)
+# # print(text)
+
+
+# images = extract_images(pdf)
+# # print(pages[0].images[0].data)
+# print(len(images))
+
+# def ExportImages(extractedImages):
+#     image_count = 1
+#     for image in images:
+    
+#         image_name = str(image_count) + ".png"
+#         with open(image_name, "wb") as data:
+#             data.write(image)
+#         image_count += 1
+    
+    
+# files_path = ["samplew.pdf","sample2.pdf"]
+# # output = "new_merger155.pdf"
+# merge_pdfs (files_path)
+
+split_pdf("sample.pdf")
